@@ -83,7 +83,6 @@ export default class CarroDAO {
                 listaCarros.push(carro);
             }
         }
-
-        return listaProdutos;
+        return listaCarros;
     }
 }
