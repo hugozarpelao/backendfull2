@@ -1,41 +1,44 @@
-//camada de interface da API que traduz HTTP
-import Categoria from "../Modelo/categoria.js";
+import Carro from "../Modelo/carro.js";
 
-export default class CategoriaCtrl {
+export default class CarrooCtrl {
 
     gravar(requisicao, resposta) {
         resposta.type('application/json');
         if (requisicao.method === 'POST' && requisicao.is('application/json')) {
             const dados = requisicao.body;
             const descricao = dados.descricao;
-            if (descricao) {
-                const categoria = new Categoria(0, descricao);
+            const precoAluguel = dados.precoAluguel;
+            const grupo = dados.grupo;
+
+            if (descricao && precoAluguel > 0 && grupo) {
+                const carro = new Carro(0, descricao, precoAluguel, grupo
+                );
                 //resolver a promise
-                categoria.gravar().then(() => {
+                carro.gravar().then(() => {
                     resposta.status(200).json({
                         "status": true,
-                        "codigoGerado": categoria.codigo,
-                        "mensagem": "Categoria incluída com sucesso!"
+                        "codigoGerado": carro.codigo,
+                        "mensagem": "Carro incluído com sucesso!"
                     });
                 })
                     .catch((erro) => {
                         resposta.status(500).json({
                             "status": false,
-                            "mensagem": "Erro ao registrar a categoria:" + erro.message
+                            "mensagem": "Erro ao registrar o carro:" + erro.message
                         });
                     });
             }
             else {
                 resposta.status(400).json({
                     "status": false,
-                    "mensagem": "Por favor, informe a descrição da categoria!"
+                    "mensagem": "Por favor, os dados do carro segundo a documentação da API!"
                 });
             }
         }
         else {
             resposta.status(400).json({
                 "status": false,
-                "mensagem": "Por favor, utilize o método POST para cadastrar uma categoria!"
+                "mensagem": "Por favor, utilize o método POST para cadastrar um carro!"
             });
         }
     }
@@ -46,33 +49,35 @@ export default class CategoriaCtrl {
             const dados = requisicao.body;
             const codigo = dados.codigo;
             const descricao = dados.descricao;
-            if (codigo && descricao) {
-                const categoria = new Categoria(codigo, descricao);
+            const precoAluguel = dados.precoAluguel;
+            const grupo = dados.grupo;
+            if (codigo && descricao && precoAluguel > 0 && grupo) {
+                const carro = new Carro(codigo, descricao, precoAluguel, grupo);
                 //resolver a promise
-                categoria.atualizar().then(() => {
+                carro.atualizar().then(() => {
                     resposta.status(200).json({
                         "status": true,
-                        "mensagem": "Categoria atualizada com sucesso!"
+                        "mensagem": "Carro atualizado com sucesso!"
                     });
                 })
                     .catch((erro) => {
                         resposta.status(500).json({
                             "status": false,
-                            "mensagem": "Erro ao atualizar a categoria:" + erro.message
+                            "mensagem": "Erro ao atualizar o carro:" + erro.message
                         });
                     });
             }
             else {
                 resposta.status(400).json({
                     "status": false,
-                    "mensagem": "Por favor, informe o código e a descrição da categoria!"
+                    "mensagem": "Por favor, informe todos os dados do carro segundo a documentação da API!"
                 });
             }
         }
         else {
             resposta.status(400).json({
                 "status": false,
-                "mensagem": "Por favor, utilize os métodos PUT ou PATCH para atualizar uma categoria!"
+                "mensagem": "Por favor, utilize os métodos PUT ou PATCH para atualizar um carro!"
             });
         }
     }
@@ -83,32 +88,32 @@ export default class CategoriaCtrl {
             const dados = requisicao.body;
             const codigo = dados.codigo;
             if (codigo) {
-                const categoria = new Categoria(codigo);
+                const carro = new Carro(codigo);
                 //resolver a promise
-                categoria.excluir().then(() => {
+                carro.atualizar().then(() => {
                     resposta.status(200).json({
                         "status": true,
-                        "mensagem": "Categoria excluída com sucesso!"
+                        "mensagem": "Carro excluído com sucesso!"
                     });
                 })
                     .catch((erro) => {
                         resposta.status(500).json({
                             "status": false,
-                            "mensagem": "Erro ao excluir a categoria:" + erro.message
+                            "mensagem": "Erro ao excluir o carro:" + erro.message
                         });
                     });
             }
             else {
                 resposta.status(400).json({
                     "status": false,
-                    "mensagem": "Por favor, informe o código da categoria!"
+                    "mensagem": "Por favor, informe o código do carro!"
                 });
             }
         }
         else {
             resposta.status(400).json({
                 "status": false,
-                "mensagem": "Por favor, utilize o método DELETE para excluir uma categoria!"
+                "mensagem": "Por favor, utilize o método DELETE para excluir um carro!"
             });
         }
     }
@@ -119,32 +124,31 @@ export default class CategoriaCtrl {
         //express, por meio do controle de rotas, será
         //preparado para esperar um termo de busca
         let termo = requisicao.params.termo;
-        if (!termo){
+        if (!termo) {
             termo = "";
         }
-        if (requisicao.method === "GET"){
-            const categoria = new Categoria();
-            categoria.consultar(termo).then((listaCategorias)=>{
+        if (requisicao.method === "GET") {
+            const carro = new Carro();
+            carro.consultar(termo).then((listaCarros) => {
                 resposta.json(
                     {
-                        status:true,
-                        listaCategorias
+                        status: true,
+                        listaCarros
                     });
             })
-            .catch((erro)=>{
-                resposta.json(
-                    {
-                        status:false,
-                        mensagem:"Não foi possível obter as categorias: " + erro.message
-                    }
-                );
-            });
+                .catch((erro) => {
+                    resposta.json(
+                        {
+                            status: false,
+                            mensagem: "Não foi possível obter os carros: " + erro.message
+                        }
+                    );
+                });
         }
-        else 
-        {
+        else {
             resposta.status(400).json({
                 "status": false,
-                "mensagem": "Por favor, utilize o método GET para consultar categorias!"
+                "mensagem": "Por favor, utilize o método GET para consultar carros!"
             });
         }
     }
