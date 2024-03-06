@@ -6,7 +6,7 @@ export default class CarroDAO {
 
     async gravar(carro) {
         if (carro instanceof Carro) {
-            const sql = `INSERT INTO carro(car_descricao, car_precoAlugel, grupo_codigo)
+            const sql = `INSERT INTO carro(car_descricao, car_precoAluguel, grupo_codigo)
                 VALUES(?,?,?)`;
             const parametros = [carro.descricao, carro.precoAluguel, carro.grupo.codigo];
             const conexao = await conectar();
@@ -17,7 +17,7 @@ export default class CarroDAO {
     }
     async atualizar(carro) {
         if (carro instanceof Carro) {
-            const sql = `UPDATE carro SET car_descricao = ?, car_precoAluguel = ?, grupo_codigo = ?,
+            const sql = `UPDATE carro SET car_descricao = ?, car_precoAluguel = ?, grupo_codigo = ?
             WHERE car_codigo = ?`;
             const parametros = [carro.descricao, carro.precoAluguel, carro.grupo.codigo, carro.codigo];
 
@@ -78,7 +78,7 @@ export default class CarroDAO {
             for (const registro of registros){
                 const grupo = new Grupo(registro.grupo_codigo, registro.grupo_descricao);
                 const carro = new Carro(registro.car_codigo,registro.car_descricao,
-                                            registro.car_precoAluguel, categoria
+                                            registro.car_precoAluguel, grupo
                                             );
                 listaCarros.push(carro);
             }

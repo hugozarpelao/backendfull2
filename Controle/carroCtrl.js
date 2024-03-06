@@ -54,7 +54,7 @@ export default class CarrooCtrl {
             if (codigo && descricao && precoAluguel > 0 && grupo) {
                 const carro = new Carro(codigo, descricao, precoAluguel, grupo);
                 //resolver a promise
-                carro.atualizar().then(() => {
+                carro.alterar().then(() => {
                     resposta.status(200).json({
                         "status": true,
                         "mensagem": "Carro atualizado com sucesso!"
@@ -90,7 +90,7 @@ export default class CarrooCtrl {
             if (codigo) {
                 const carro = new Carro(codigo);
                 //resolver a promise
-                carro.atualizar().then(() => {
+                carro.excluir().then(() => {
                     resposta.status(200).json({
                         "status": true,
                         "mensagem": "Carro excluído com sucesso!"
