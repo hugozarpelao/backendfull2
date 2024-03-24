@@ -1,7 +1,7 @@
 //camada de interface da API que traduz HTTP
-import Categoria from "../Modelo/categoria.js";
+import Grupo from "../Modelo/grupo.js";
 
-export default class CategoriaCtrl {
+export default class GrupoCtrl {
 
     gravar(requisicao, resposta) {
         resposta.type('application/json');
@@ -9,33 +9,33 @@ export default class CategoriaCtrl {
             const dados = requisicao.body;
             const descricao = dados.descricao;
             if (descricao) {
-                const categoria = new Categoria(0, descricao);
+                const grupo = new Grupo(0, descricao);
                 //resolver a promise
-                categoria.gravar().then(() => {
+                grupo.gravar().then(() => {
                     resposta.status(200).json({
                         "status": true,
-                        "codigoGerado": categoria.codigo,
-                        "mensagem": "Categoria incluída com sucesso!"
+                        "codigoGerado": grupo.codigo,
+                        "mensagem": "Grupo incluído com sucesso!"
                     });
                 })
                     .catch((erro) => {
                         resposta.status(500).json({
                             "status": false,
-                            "mensagem": "Erro ao registrar a categoria:" + erro.message
+                            "mensagem": "Erro ao registrar o grupo:" + erro.message
                         });
                     });
             }
             else {
                 resposta.status(400).json({
                     "status": false,
-                    "mensagem": "Por favor, informe a descrição da categoria!"
+                    "mensagem": "Por favor, informe a descrição do grupo!"
                 });
             }
         }
         else {
             resposta.status(400).json({
                 "status": false,
-                "mensagem": "Por favor, utilize o método POST para cadastrar uma categoria!"
+                "mensagem": "Por favor, utilize o método POST para cadastrar um grupo!"
             });
         }
     }
@@ -47,32 +47,32 @@ export default class CategoriaCtrl {
             const codigo = dados.codigo;
             const descricao = dados.descricao;
             if (codigo && descricao) {
-                const categoria = new Categoria(codigo, descricao);
+                const grupo = new Grupo(codigo, descricao);
                 //resolver a promise
-                categoria.atualizar().then(() => {
+                grupo.atualizar().then(() => {
                     resposta.status(200).json({
                         "status": true,
-                        "mensagem": "Categoria atualizada com sucesso!"
+                        "mensagem": "Grupo atualizado com sucesso!"
                     });
                 })
                     .catch((erro) => {
                         resposta.status(500).json({
                             "status": false,
-                            "mensagem": "Erro ao atualizar a categoria:" + erro.message
+                            "mensagem": "Erro ao atualizar o grupo:" + erro.message
                         });
                     });
             }
             else {
                 resposta.status(400).json({
                     "status": false,
-                    "mensagem": "Por favor, informe o código e a descrição da categoria!"
+                    "mensagem": "Por favor, informe o código e a descrição do grupo!"
                 });
             }
         }
         else {
             resposta.status(400).json({
                 "status": false,
-                "mensagem": "Por favor, utilize os métodos PUT ou PATCH para atualizar uma categoria!"
+                "mensagem": "Por favor, utilize os métodos PUT ou PATCH para atualizar um grupo!"
             });
         }
     }
@@ -83,32 +83,32 @@ export default class CategoriaCtrl {
             const dados = requisicao.body;
             const codigo = dados.codigo;
             if (codigo) {
-                const categoria = new Categoria(codigo);
+                const grupo = new Grupo(codigo);
                 //resolver a promise
-                categoria.excluir().then(() => {
+                grupo.excluir().then(() => {
                     resposta.status(200).json({
                         "status": true,
-                        "mensagem": "Categoria excluída com sucesso!"
+                        "mensagem": "Grupo excluído com sucesso!"
                     });
                 })
                     .catch((erro) => {
                         resposta.status(500).json({
                             "status": false,
-                            "mensagem": "Erro ao excluir a categoria:" + erro.message
+                            "mensagem": "Erro ao excluir o grupo:" + erro.message
                         });
                     });
             }
             else {
                 resposta.status(400).json({
                     "status": false,
-                    "mensagem": "Por favor, informe o código da categoria!"
+                    "mensagem": "Por favor, informe o código do grupo!"
                 });
             }
         }
         else {
             resposta.status(400).json({
                 "status": false,
-                "mensagem": "Por favor, utilize o método DELETE para excluir uma categoria!"
+                "mensagem": "Por favor, utilize o método DELETE para excluir um grupo!"
             });
         }
     }
@@ -123,19 +123,19 @@ export default class CategoriaCtrl {
             termo = "";
         }
         if (requisicao.method === "GET"){
-            const categoria = new Categoria();
-            categoria.consultar(termo).then((listaCategorias)=>{
+            const grupo = new Grupo();
+            grupo.consultar(termo).then((listaGrupos)=>{
                 resposta.json(
                     {
                         status:true,
-                        listaCategorias
+                        listaGrupos
                     });
             })
             .catch((erro)=>{
                 resposta.json(
                     {
                         status:false,
-                        mensagem:"Não foi possível obter as categorias: " + erro.message
+                        mensagem:"Não foi possível obter os grupos: " + erro.message
                     }
                 );
             });
@@ -144,7 +144,7 @@ export default class CategoriaCtrl {
         {
             resposta.status(400).json({
                 "status": false,
-                "mensagem": "Por favor, utilize o método GET para consultar categorias!"
+                "mensagem": "Por favor, utilize o método GET para consultar grupos!"
             });
         }
     }
