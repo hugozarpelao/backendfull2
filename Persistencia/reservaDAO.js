@@ -14,7 +14,7 @@ export default class ReservaDAO {
             reserva.cod_rev = retorno[0].insertId;
             const sql2 = 'INSERT INTO carro_resv(carro_esc, cod_reserva) VALUES(?,?)'
             for (const carro of reserva.carro) {
-                const parametro2 = [carro.carro_esc, reserva.cod_rev]
+                const parametro2 = [carro.codigo, reserva.cod_rev]
                 await conexao.execute(sql2, parametro2);
             }
             global.poolConexoes.releaseConnection(conexao);

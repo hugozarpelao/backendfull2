@@ -12,7 +12,7 @@ export default class ReservaCtrl {
             const data_devolucao = dados.data_devolucao;
             const total = dados.total;
             const carro = dados.carro;
-            if (carro && usuario && data_retirada && total) {
+            if (usuario && data_retirada && total) {
                 const reserva = new Reserva(0, usuario, data_retirada, data_devolucao, total, carro);
                 //resolver a promise
                 reserva.gravar().then(() => {
